@@ -9,7 +9,6 @@ services:
     depends_on: 
       - api
     environment:
-      # we set our environment variables in the container app
       PORT: ${WEB_CONTAINER_PORT}
     ports:
       - ${WEB_PORT}:${WEB_CONTAINER_PORT}
@@ -22,7 +21,6 @@ services:
     container_name: api
     command: ['npm', 'start']
     environment:
-      # we set our environment variables in the container app
       PORT: ${API_CONTAINER_PORT}
       MONGO_DB_URI: 'mongodb+srv://${MONGO_USER}:${MONGO_PSW}@cluster0.lhauy.mongodb.net/chat-app'
     ports:
