@@ -4,12 +4,12 @@
 	"description": "web ssr app",
 	"main": "/src/index.js",
 	"scripts": {
-		"build": "rimraf dist && npm run build:client && npm run build:server",
+		"build": "npx rimraf dist && npm run build:client && npm run build:server",
 		"build:client": "webpack --config webpack.client.js",
 		"build:server": "webpack --config webpack.server.js",
 		"start": "node dist/build/index.js",
 		"watch:server": "nodemon --watch dist/build --exec \"node dist/build/index.js\"",
-		"watch": "rimraf dist && npm-run-all --parallel watch:build*",
+		"watch": "npx rimraf dist && npm-run-all --parallel watch:build*",
 		"watch:build-server": "webpack --config webpack.server.js --watch",
 		"watch:build-client": "webpack --config webpack.client.js --watch"
 	},
@@ -24,7 +24,6 @@
 		"@material-ui/icons": "^4.11.2",
 		"axios": "^0.21.1",
 		"cors": "^2.8.5",
-		"ejs": "^3.1.6",
 		"express": "^4.17.1",
 		"prop-types": "^15.7.2",
 		"react": "^17.0.1",
