@@ -11,7 +11,7 @@ router.all('/', async (_req, res) => {
 	res.redirect('/welcome');
 });
 
-router.all('/chat', wrapAsyncHandler(chatRoute));
+router.all('/chat-app', wrapAsyncHandler(chatRoute));
 router.all('/welcome', wrapAsyncHandler(welcomeRoute));
 
 router.use('*', wrapAsyncHandler(notFoundRoute));
