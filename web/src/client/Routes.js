@@ -8,7 +8,7 @@ export default [
 		routes: [
 			{
 				...WelcomePage,
-				path: '/',
+				path: '/welcome',
 				exact: true,
 			},
 			{

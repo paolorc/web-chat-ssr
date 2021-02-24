@@ -45,11 +45,7 @@ import { connect } from 'react-redux';
 // };
 
 const App = ({ route }) => {
-	return (
-		<div>
-			<div>{renderRoutes(route.routes)}</div>
-		</div>
-	);
+	return <div>{renderRoutes(route.routes)}</div>;
 };
 
 App.propTypes = {

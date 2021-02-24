@@ -2,45 +2,46 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
-import { renderRoutes } from 'react-router-config';
-import serialize from 'serialize-javascript';
+import { matchRoutes, renderRoutes } from 'react-router-config';
 
 import { createStoreWithMiddleware } from '../../client/store';
 import Routes from '../../client/Routes';
+import template from './template';
 
-const buildHtml = (html, preloadedState) => {
-	return `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Redux Universal Example</title>
-        </head>
-        <body>
-          <div id="root">${html}</div>
-          <script>
-            // WARNING: See the following for security issues around embedding JSON in HTML:
-            // https://redux.js.org/recipes/server-rendering/#security-considerations
-            window.__PRELOADED_STATE__ = ${serialize(preloadedState)}
-          </script>
-          <script src="/public/bundle.js"></script>
-        </body>
-      </html>
-  `;
+const loadRoutesData = (pathLocation, params, store) => {
+	const routes = matchRoutes(Routes, pathLocation);
+
+	// Execute all loadData functions inside given urls and wrap promises with new promises to be able to render pages all the time
+	// Even if we get an error while loading data, we will still attempt to render page.
+	const promises = routes.map(({ route }) => {
+		return route.loadData ? route.loadData(store, params) : Promise.resolve(null);
+	});
+
+	return Promise.all(promises);
 };
 
-export default (req, context, initialState = {}) => {
+export default async ({ req, res, pageTitle, initialState = {} }) => {
+	const { path, params } = req;
 	const store = createStoreWithMiddleware(initialState);
+
+	await loadRoutesData(path, params, store);
+
+	const context = {};
 	// Render the component to a string
 	const htmlContent = renderToString(
 		<Provider store={store}>
-			<Router location={req.path} context={context}>
+			<Router location={path} context={context}>
 				<div>{renderRoutes(Routes)}</div>
 			</Router>
 		</Provider>,
 	);
 
+	if (context.notFound) {
+		res.status(404);
+	}
+
 	// Grab the initial state from our Redux store
 	const preloadedState = store.getState();
 
-	return buildHtml(htmlContent, preloadedState);
+	res.send(template({ htmlContent, pageTitle, preloadedState }));
 };
