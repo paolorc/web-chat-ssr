@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.use('/public', express.static(path.join(__dirname, '../../dist/public')));
-app.use('/assets', express.static(path.join(__dirname, 'static', 'public')));
+app.use('/assets', express.static(path.join(__dirname, './static/public')));
 
 // Load routes
 app.use(routes);

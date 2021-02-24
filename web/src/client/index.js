@@ -1,8 +1,11 @@
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 
 import { createStoreWithMiddleware } from './store';
+import Routes from './Routes';
 import App from './App';
 
 // Grab the state from a global variable injected into the server-generated HTML
@@ -16,7 +19,9 @@ const store = createStoreWithMiddleware(preloadedState);
 
 hydrate(
 	<Provider store={store}>
-		<App />
+		<Router>
+			<div>{renderRoutes(Routes)}</div>
+		</Router>
 	</Provider>,
 	document.getElementById('root'),
 );

@@ -1,10 +1,12 @@
 import React from 'react';
-import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter as Router } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 import serialize from 'serialize-javascript';
 
 import { createStoreWithMiddleware } from '../../client/store';
-import App from '../../client/App';
+import Routes from '../../client/Routes';
 
 const buildHtml = (html, preloadedState) => {
 	return `
@@ -26,17 +28,19 @@ const buildHtml = (html, preloadedState) => {
   `;
 };
 
-export default (req, res, initialState = {}) => {
+export default (req, context, initialState = {}) => {
 	const store = createStoreWithMiddleware(initialState);
 	// Render the component to a string
 	const htmlContent = renderToString(
 		<Provider store={store}>
-			<App />
+			<Router location={req.path} context={context}>
+				<div>{renderRoutes(Routes)}</div>
+			</Router>
 		</Provider>,
 	);
 
 	// Grab the initial state from our Redux store
 	const preloadedState = store.getState();
 
-	res.send(buildHtml(htmlContent, preloadedState));
+	return buildHtml(htmlContent, preloadedState);
 };
