@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 const App = (props) => {
-	const [hide, setHide] = useState(false);
+	const [hide, setHide] = useState(props.isHided);
 	// const [items, setItems] = useState([]);
 	// useEffect(() => {
 	//     (async () => {
@@ -27,11 +27,15 @@ const App = (props) => {
 };
 
 App.defaultProps = {
-	items: [{ id: 1, label: 'test' }],
+	items: [
+		{ id: 1, label: 'test' },
+		{ id: 1, label: 'test222' },
+	],
 };
 
 const mapStateToProps = (state) => ({
 	isHided: state.toggle.isHided,
+	items: state.users,
 });
 
-export default App;
+export default connect(mapStateToProps, {})(App);
