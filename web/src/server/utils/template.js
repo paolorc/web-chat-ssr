@@ -5,6 +5,7 @@ export default ({ html = '', pageTitle = 'Default title', preloadedState = {} })
       <!DOCTYPE html>
       <html>
         <head>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
           <title>${pageTitle}</title>
         </head>
         <body>

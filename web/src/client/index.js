@@ -3,9 +3,11 @@ import { hydrate, render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { renderRoutes } from 'react-router-config';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 import { createStoreWithMiddleware } from './store';
 import Routes from './Routes';
+import theme from './theme';
 
 // Grab the state from a global variable injected into the server-generated HTML
 const preloadedState = window.__PRELOADED_STATE__;
@@ -19,9 +21,11 @@ const renderMethod = module.hot ? hydrate : render;
 
 renderMethod(
 	<Provider store={store}>
-		<Router>
-			<div>{renderRoutes(Routes)}</div>
-		</Router>
+		<ThemeProvider theme={theme}>
+			<Router>
+				<div>{renderRoutes(Routes)}</div>
+			</Router>
+		</ThemeProvider>
 	</Provider>,
 	document.getElementById('root'),
 );

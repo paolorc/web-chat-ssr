@@ -1,14 +1,35 @@
 import React from 'react';
-import { Avatar } from '@material-ui/core';
+import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from '@material-ui/core';
 
-export default function SlidebarChat() {
+const useStyles = makeStyles((theme) => ({
+	inline: {
+		display: 'inline',
+	},
+}));
+
+export default function SlidebarChat({ name, lastName, message = '' }) {
+	const classes = useStyles();
+
 	return (
-		<div className="slidebarChat">
-			<Avatar />
-			<div className="slidebarChat__info">
-				<h2>Room Name</h2>
-				<p>this is the last message</p>
-			</div>
-		</div>
+		<ListItem button alignItems="flex-start">
+			<ListItemAvatar>
+				<Avatar>JW</Avatar>
+			</ListItemAvatar>
+
+			<ListItemText
+				primary="Jefferson Etc"
+				secondary={
+					<Typography
+						component="span"
+						variant="body2"
+						color="primary"
+						noWrap
+						className={classes.inline}
+					>
+						This is a very long text in my opinion
+					</Typography>
+				}
+			/>
+		</ListItem>
 	);
 }
