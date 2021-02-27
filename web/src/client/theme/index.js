@@ -1,14 +1,22 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
-import green from '@material-ui/core/colors/green';
 
 const theme = createMuiTheme({
 	palette: {
 		primary: {
-			main: purple[500],
+			main: '#757575',
 		},
 		secondary: {
-			main: green[500],
+			main: '#01579b',
+		},
+		message: {
+			color: 'white',
+			borderRadius: '10px',
+			maxWidth: '60%',
+			padding: '10px',
+		},
+		text: {
+			chat: 'white',
+			secondary: '#bdbdbd',
 		},
 	},
 });

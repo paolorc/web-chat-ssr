@@ -2,6 +2,7 @@ import React from 'react';
 import { renderRoutes } from 'react-router-config';
 import PropTypes from 'prop-types';
 
+// This is the root entrypoint of the client App
 const App = ({ route }) => {
 	return <div>{renderRoutes(route.routes)}</div>;
 };

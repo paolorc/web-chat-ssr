@@ -22,9 +22,7 @@ const renderMethod = module.hot ? hydrate : render;
 renderMethod(
 	<Provider store={store}>
 		<ThemeProvider theme={theme}>
-			<Router>
-				<div>{renderRoutes(Routes)}</div>
-			</Router>
+			<Router>{renderRoutes(Routes)}</Router>
 		</ThemeProvider>
 	</Provider>,
 	document.getElementById('root'),

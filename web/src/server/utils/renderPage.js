@@ -3,10 +3,12 @@ import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
 import { matchRoutes, renderRoutes } from 'react-router-config';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 import { createStoreWithMiddleware } from '../../client/store';
 import Routes from '../../client/Routes';
 import template from './template';
+import theme from '../../client/theme';
 
 const loadRoutesData = (pathLocation, store) => {
 	const routes = matchRoutes(Routes, pathLocation);
@@ -15,7 +17,7 @@ const loadRoutesData = (pathLocation, store) => {
 	// Even if we get an error while loading data, we will still attempt to render page.
 	const promises = routes.map(({ route, match }) => {
 		const { params } = match;
-		console.log(JSON.stringify(params));
+		// console.log(JSON.stringify(params));
 		return route.loadData ? route.loadData(store, params) : Promise.resolve(null);
 	});
 
@@ -32,9 +34,11 @@ export default async ({ req, res, pageTitle, initialState = {} }) => {
 	// Render the component to a string
 	const htmlContent = renderToString(
 		<Provider store={store}>
-			<Router location={path} context={context}>
-				<div>{renderRoutes(Routes)}</div>
-			</Router>
+			<ThemeProvider theme={theme}>
+				<Router location={path} context={context}>
+					{renderRoutes(Routes)}
+				</Router>
+			</ThemeProvider>
 		</Provider>,
 	);
 
