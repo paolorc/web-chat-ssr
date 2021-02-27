@@ -8,13 +8,13 @@ export default [
 		...App,
 		routes: [
 			{
-				...ChatAppPage,
-				path: '/chat-app',
+				...WelcomePage,
+				path: '/welcome',
 				exact: true,
 			},
 			{
-				...WelcomePage,
-				path: '/welcome',
+				...ChatAppPage,
+				path: '/chat-app/:chatId',
 				exact: true,
 			},
 			{

@@ -8,12 +8,14 @@ import { createStoreWithMiddleware } from '../../client/store';
 import Routes from '../../client/Routes';
 import template from './template';
 
-const loadRoutesData = (pathLocation, params, store) => {
+const loadRoutesData = (pathLocation, store) => {
 	const routes = matchRoutes(Routes, pathLocation);
 
 	// Execute all loadData functions inside given urls and wrap promises with new promises to be able to render pages all the time
 	// Even if we get an error while loading data, we will still attempt to render page.
-	const promises = routes.map(({ route }) => {
+	const promises = routes.map(({ route, match }) => {
+		const { params } = match;
+		console.log(JSON.stringify(params));
 		return route.loadData ? route.loadData(store, params) : Promise.resolve(null);
 	});
 
@@ -21,10 +23,10 @@ const loadRoutesData = (pathLocation, params, store) => {
 };
 
 export default async ({ req, res, pageTitle, initialState = {} }) => {
-	const { path, params } = req;
+	const { path } = req;
 	const store = createStoreWithMiddleware(initialState);
 
-	await loadRoutesData(path, params, store);
+	await loadRoutesData(path, store);
 
 	const context = {};
 	// Render the component to a string

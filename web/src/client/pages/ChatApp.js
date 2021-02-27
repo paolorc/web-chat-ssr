@@ -2,59 +2,177 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import IconButton from '@material-ui/core/IconButton';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Toolbar from '@material-ui/core/Toolbar';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import Divider from '@material-ui/core/Divider';
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import Fab from '@material-ui/core/Fab';
+import SendIcon from '@material-ui/icons/Send';
 
-import BufferList from '../components/BufferList';
-
-const drawerWidth = 250;
-
-const useStyles = makeStyles((theme) => ({
-	appBar: {
-		width: `calc(100% - ${drawerWidth}px)`,
-		marginLeft: drawerWidth,
+const useStyles = makeStyles({
+	table: {
+		minWidth: 650,
 	},
-	appBarTitle: {
-		flexGrow: 1,
+	chatSection: {
+		width: '100%',
+		height: '90vh',
 	},
-	drawerPaper: {
-		width: drawerWidth,
+	headBG: {
+		backgroundColor: '#e0e0e0',
 	},
-}));
-
+	borders: {
+		borderRight: '1px solid #e0e0e0',
+		borderBottom: '1px solid #e0e0e0',
+	},
+	messageArea: {
+		height: '80vh',
+		overflowY: 'auto',
+	},
+});
 const ChatApp = () => {
 	const classes = useStyles();
+
 	return (
-		<>
-			<CssBaseline />
-			<AppBar className={classes.appBar} color="default">
-				<Toolbar>
-					<Typography variant="h6" noWrap>
-						#geheimorganisation
+		<div>
+			<Grid container>
+				<Grid item xs={12}>
+					<Typography variant="h5" className="header-message">
+						IOVLabs
 					</Typography>
-				</Toolbar>
-			</AppBar>
-			<Drawer
-				classes={{
-					paper: classes.drawerPaper,
-				}}
-				variant="permanent"
-			>
-				<AppBar position="static">
-					<Toolbar>
-						<Typography className={classes.appBarTitle} variant="h6" noWrap>
-							IOVlabs
-						</Typography>
-					</Toolbar>
-				</AppBar>
-				<BufferList />
-			</Drawer>
-		</>
+				</Grid>
+			</Grid>
+			<Grid container component={Paper} className={classes.chatSection}>
+				<Grid item xs={12} sm={3} lg={3} className={classes.borders}>
+					<List>
+						<ListItem key="RemySharp">
+							<ListItemIcon>
+								<Avatar
+									alt="Remy Sharp"
+									src="https://material-ui.com/static/images/avatar/1.jpg"
+								/>
+							</ListItemIcon>
+							<ListItemText primary="John Wick"></ListItemText>
+							<ListItemText secondary="You" align="right" />
+						</ListItem>
+
+						<Divider />
+
+						<ListItem button key="RemySharp2" alignItems="flex-start">
+							<ListItemIcon>
+								<Avatar
+									alt="Remy Sharp 2"
+									src="https://material-ui.com/static/images/avatar/1.jpg"
+								/>
+							</ListItemIcon>
+							<ListItemText
+								primary="Remy Sharp2"
+								secondary={
+									<Typography
+										variant="body2"
+										color="primary"
+										noWrap
+										className={classes.inline}
+									>
+										This is a very long text in my opinion This is a very long
+										text in my opinion
+									</Typography>
+								}
+							>
+								Remy Sharp
+							</ListItemText>
+
+							<ListItemText secondary="online" align="right"></ListItemText>
+						</ListItem>
+
+						<Divider variant="inset" component="li" />
+
+						<ListItem button key="Alice">
+							<ListItemIcon>
+								<Avatar
+									alt="Alice"
+									src="https://material-ui.com/static/images/avatar/3.jpg"
+								/>
+							</ListItemIcon>
+							<ListItemText primary="Alice">Alice</ListItemText>
+						</ListItem>
+
+						<Divider variant="inset" component="li" />
+
+						<ListItem button key="CindyBaker">
+							<ListItemIcon>
+								<Avatar
+									alt="Cindy Baker"
+									src="https://material-ui.com/static/images/avatar/2.jpg"
+								/>
+							</ListItemIcon>
+							<ListItemText primary="Cindy Baker">Cindy Baker</ListItemText>
+						</ListItem>
+					</List>
+				</Grid>
+
+				<Grid item xs={9}>
+					<List className={classes.messageArea}>
+						<ListItem key="1">
+							<Grid container>
+								<Grid item xs={12}>
+									<ListItemText
+										align="right"
+										primary="Hey man, What's up ?"
+									></ListItemText>
+								</Grid>
+								<Grid item xs={12}>
+									<ListItemText align="right" secondary="09:30"></ListItemText>
+								</Grid>
+							</Grid>
+						</ListItem>
+						<ListItem key="2">
+							<Grid container>
+								<Grid item xs={12}>
+									<ListItemText
+										align="left"
+										primary="Hey, Iam Good! What about you ?"
+									></ListItemText>
+								</Grid>
+								<Grid item xs={12}>
+									<ListItemText align="left" secondary="09:31"></ListItemText>
+								</Grid>
+							</Grid>
+						</ListItem>
+						<ListItem key="3">
+							<Grid container>
+								<Grid item xs={12}>
+									<ListItemText
+										align="right"
+										primary="Cool. i am good, let's catch up!"
+									></ListItemText>
+								</Grid>
+								<Grid item xs={12}>
+									<ListItemText align="right" secondary="10:30"></ListItemText>
+								</Grid>
+							</Grid>
+						</ListItem>
+					</List>
+					<Divider />
+					<Grid container style={{ padding: '20px' }}>
+						<Grid item xs={11}>
+							<TextField id="outlined-basic-email" label="Type Something" fullWidth />
+						</Grid>
+						<Grid xs={1} align="right">
+							<Fab color="primary" aria-label="add">
+								<SendIcon />
+							</Fab>
+						</Grid>
+					</Grid>
+				</Grid>
+			</Grid>
+		</div>
 	);
 };
 

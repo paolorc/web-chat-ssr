@@ -8,10 +8,10 @@
 		"build:client": "webpack --config webpack.client.js",
 		"build:server": "webpack --config webpack.server.js",
 		"start": "node dist/build/index.js",
-		"watch:server": "nodemon --watch dist/build --exec \"node dist/build/index.js\"",
 		"watch": "npx rimraf dist && npm-run-all --parallel watch:build*",
 		"watch:build-server": "webpack --config webpack.server.js --watch",
-		"watch:build-client": "webpack --config webpack.client.js --watch"
+		"watch:build-client": "webpack --config webpack.client.js --watch",
+		"watch:server": "nodemon --watch dist/build --exec \"node dist/build/index.js\""
 	},
 	"keywords": [
 		"node",
