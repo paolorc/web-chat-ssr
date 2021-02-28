@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-import { cleanCurrentUser } from '../store/actions/users';
+import { cleanAllUsers } from '../store/actions/users';
 
 import ChatsPanel from '../components/ChatsPanel';
 import MesssagesPanel from '../components/MessagesPanel';
@@ -27,13 +27,11 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const TestChat = ({ cleanCurrentUser, users }) => {
+const TestChat = ({ cleanAllUsers, users }) => {
 	const classes = useStyles();
 	const { currentUser } = users;
 
-	useEffect(() => {
-		return cleanCurrentUser;
-	}, []);
+	useEffect(() => {}, []);
 
 	if (!currentUser._id) {
 		// Redirect if no user was selected from welcome page
@@ -59,5 +57,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default {
-	component: connect(mapStateToProps, { cleanCurrentUser })(TestChat),
+	component: connect(mapStateToProps, { cleanAllUsers })(TestChat),
 };

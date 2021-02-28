@@ -1,5 +1,5 @@
 import {
-	CLEAN_CURRENT_USER,
+	CLEAN_ALL_USERS,
 	FETCH_USERS,
 	FETCH_USERS_ERROR,
 	FETCH_USERS_SUCCESSFUL,
@@ -16,10 +16,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case CLEAN_CURRENT_USER:
+		case CLEAN_ALL_USERS:
 			return {
 				...state,
-				currentUser: {},
+				allUsers: [],
 			};
 
 		case FETCH_USERS:

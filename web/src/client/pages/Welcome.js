@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { CircularProgress, Grid, List, makeStyles, Typography } from '@material-ui/core';
 
-import { fetchUsers, setActiveUser } from '../store/actions/users';
+import { cleanAllUsers, fetchUsers, setActiveUser } from '../store/actions/users';
 import UserInfo from '../components/UserInfo';
 
 const useStyles = makeStyles({
@@ -20,16 +20,18 @@ const useStyles = makeStyles({
 	},
 });
 
-const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, setActiveUser }) => {
+const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, setActiveUser }) => {
 	const classes = useStyles();
 
 	useEffect(() => {
-		// If for some reason server preload doesn't work
-		if (!allUsers.length) {
+		//For re render without going to the server
+		if (allUsers.length === 0) {
 			console.log(JSON.stringify(allUsers));
 			loadUsers();
 		}
-	}, []);
+
+		return cleanAllUsers;
+	}, [loadUsers]);
 
 	const handleSelectUser = (user) => {
 		setActiveUser(user);
@@ -108,6 +110,6 @@ const loadData = (store) => {
 };
 
 export default {
-	component: connect(mapStateToProps, { fetchUsers, setActiveUser })(Welcome),
+	component: connect(mapStateToProps, { cleanAllUsers, fetchUsers, setActiveUser })(Welcome),
 	loadData,
 };

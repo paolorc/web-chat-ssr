@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+export const CLEAN_ALL_USERS = 'CLEAN_ALL_USERS';
 export const CLEAN_CURRENT_USER = 'CLEAN_CURRENT_USER';
 export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
@@ -11,6 +12,12 @@ export const SET_INACTIVE_USER = 'SET_INACTIVE_USER';
 export function cleanCurrentUser() {
 	return {
 		type: CLEAN_CURRENT_USER,
+	};
+}
+
+export function cleanAllUsers() {
+	return {
+		type: CLEAN_ALL_USERS,
 	};
 }
 
