@@ -1,8 +1,10 @@
 import {
+	CLEAN_CURRENT_USER,
 	FETCH_USERS,
 	FETCH_USERS_ERROR,
 	FETCH_USERS_SUCCESSFUL,
 	SET_ACTIVE_USER,
+	SET_ACTIVE_USER_SUCCESSFUL,
 } from '../actions/users';
 
 const initialState = {
@@ -14,9 +16,16 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
+		case CLEAN_CURRENT_USER:
+			return {
+				...state,
+				currentUser: {},
+			};
+
 		case FETCH_USERS:
 			return {
 				...state,
+				currentUser: {},
 				loading: true,
 				error: false,
 			};
@@ -37,6 +46,13 @@ export default (state = initialState, action) => {
 			};
 
 		case SET_ACTIVE_USER:
+			return {
+				...state,
+				loading: true,
+				error: false,
+			};
+
+		case SET_ACTIVE_USER_SUCCESSFUL:
 			return {
 				...state,
 				currentUser: action.payload.currentUser,

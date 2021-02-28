@@ -28,6 +28,7 @@ export default async ({ req, res, pageTitle, initialState = {} }) => {
 	const { path } = req;
 	const store = createStoreWithMiddleware(initialState);
 
+	// Preload all inital data needed for all routes pages!
 	await loadRoutesData(path, store);
 
 	const context = {};
@@ -48,6 +49,7 @@ export default async ({ req, res, pageTitle, initialState = {} }) => {
 
 	// Grab the initial state from our Redux store
 	const preloadedState = store.getState();
+	console.log(`preloadedState: ${JSON.stringify(preloadedState)}`);
 
 	res.send(template({ htmlContent, pageTitle, preloadedState }));
 };

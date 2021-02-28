@@ -3,15 +3,21 @@ import { Avatar, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 
 const UserInfo = ({
 	avatarUrl = 'https://material-ui.com/static/images/avatar/1.jpg',
+	id = Math.random(),
 	isButton = false,
 	isOwner = false,
-	key = Math.random(),
+	onClick = () => {},
 	userName = 'Name',
 	userLastName = 'LastName',
 	withDivider = false,
 }) => {
 	return (
-		<ListItem button={isButton} divider={withDivider} key={key}>
+		<ListItem
+			button={isButton}
+			divider={withDivider}
+			key={id}
+			onClick={(event) => onClick(event, 0)}
+		>
 			<ListItemIcon>
 				<Avatar src={avatarUrl} />
 			</ListItemIcon>

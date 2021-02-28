@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+
+import { cleanCurrentUser } from '../store/actions/users';
 
 import ChatsPanel from '../components/ChatsPanel';
 import MesssagesPanel from '../components/MessagesPanel';
@@ -24,8 +27,18 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const TestChat = () => {
+const TestChat = ({ cleanCurrentUser, users }) => {
 	const classes = useStyles();
+	const { currentUser } = users;
+
+	useEffect(() => {
+		return cleanCurrentUser;
+	}, []);
+
+	if (!currentUser._id) {
+		// Redirect if no user was selected from welcome page
+		return <Redirect to="/welcome" />;
+	}
 
 	return (
 		<div className={classes.wrapper}>
@@ -42,9 +55,9 @@ const TestChat = () => {
 };
 
 const mapStateToProps = (state) => ({
-	allUsers: state.users?.allUsers,
+	users: state.users,
 });
 
 export default {
-	component: connect(mapStateToProps, {})(TestChat),
+	component: connect(mapStateToProps, { cleanCurrentUser })(TestChat),
 };

@@ -5,12 +5,12 @@ const useStyles = makeStyles((theme) => ({
 	messageContainerLeft: {
 		backgroundColor: 'secondary',
 		color: 'text.secondary',
-		justifyContent: 'start',
+		justifyContent: 'flex-start',
 	},
 	messageContainerRight: {
 		backgroundColor: 'primary',
 		color: 'text.secondary',
-		justifyContent: 'end',
+		justifyContent: 'flex-end',
 	},
 	messageLeft: {
 		backgroundColor: theme.palette.secondary.main,

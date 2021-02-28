@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-export const FETCH_ROOM_MESSAGES = 'FETCH_USERS';
-export const FETCH_ROOM_MESSAGES_ERROR = 'FETCH_USERS_ERROR';
-export const FETCH_ROOM_MESSAGES_SUCCESSFUL = 'FETCH_USERS_SUCCESSFUL';
+export const FETCH_ROOM_MESSAGES = 'FETCH_ROOM_MESSAGES';
+export const FETCH_ROOM_MESSAGES_ERROR = 'FETCH_ROOM_MESSAGES_ERROR';
+export const FETCH_ROOM_MESSAGES_SUCCESSFUL = 'FETCH_ROOM_MESSAGES_SUCCESSFUL';
 
 export function fetchRoomMessages() {
 	return async (dispatch) => {
