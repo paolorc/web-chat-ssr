@@ -24,7 +24,7 @@ const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, se
 	const classes = useStyles();
 
 	useEffect(() => {
-		//For re render without going to the server
+		//For re rendering without going to the server
 		if (allUsers.length === 0) {
 			console.log(JSON.stringify(allUsers));
 			loadUsers();

@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const TestChat = ({ cleanAllUsers, users }) => {
+const ChatApp = ({ cleanAllUsers, users }) => {
 	const classes = useStyles();
 	const { currentUser } = users;
 
@@ -57,5 +57,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default {
-	component: connect(mapStateToProps, { cleanAllUsers })(TestChat),
+	component: connect(mapStateToProps, { cleanAllUsers })(ChatApp),
 };

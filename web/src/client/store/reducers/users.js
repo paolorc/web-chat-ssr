@@ -4,6 +4,7 @@ import {
 	FETCH_USERS_ERROR,
 	FETCH_USERS_SUCCESSFUL,
 	SET_ACTIVE_USER,
+	SET_ACTIVE_USER_ERROR,
 	SET_ACTIVE_USER_SUCCESSFUL,
 } from '../actions/users';
 
@@ -42,7 +43,6 @@ export default (state = initialState, action) => {
 				...state,
 				allUsers: action.payload.allUsers,
 				loading: false,
-				error: false,
 			};
 
 		case SET_ACTIVE_USER:
@@ -52,12 +52,18 @@ export default (state = initialState, action) => {
 				error: false,
 			};
 
+		case SET_ACTIVE_USER_ERROR:
+			return {
+				...state,
+				loading: false,
+				error: action.payload.message,
+			};
+
 		case SET_ACTIVE_USER_SUCCESSFUL:
 			return {
 				...state,
 				currentUser: action.payload.currentUser,
 				loading: false,
-				error: false,
 			};
 
 		default:

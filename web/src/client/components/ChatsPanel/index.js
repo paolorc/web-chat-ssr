@@ -1,10 +1,57 @@
-import React from 'react';
-import { Hidden, List } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { CircularProgress, Grid, Hidden, List } from '@material-ui/core';
 
+import { cleanAllChats, fetchChats, setCurrentChat } from '../../store/actions/chats';
 import Chat from '../Chat';
 import UserInfo from '../UserInfo';
 
-const ChatsPanel = () => {
+const ChatsPanel = ({ chats, cleanAllChats, fetchChats, setCurrentChat, users }) => {
+	const { allChats, currentChat, loading: isLoading } = chats;
+	const { currentUser } = users;
+
+	useEffect(() => {
+		fetchChats();
+
+		return cleanAllChats;
+	}, [fetchChats]);
+
+	const handleSelectChat = (chat) => {
+		setCurrentChat(chat);
+	};
+
+	const renderChats = (isCompact = false) => {
+		const userChats = allChats.map((chat) => {
+			const chatInfo = {
+				...chat,
+				memberUser: chat.members.find((member) => member._id !== currentUser._id),
+			};
+
+			return (
+				<div key={chatInfo._id}>
+					<Chat
+						avatarUrl={chatInfo.memberUser.imageUrl}
+						isCompact={isCompact}
+						id={chatInfo._id}
+						isSelected={currentChat._id === chatInfo._id}
+						lastMessage={chatInfo.lastMessage}
+						onClick={() => handleSelectChat(chatInfo)}
+						userName={chatInfo.memberUser.name}
+						userLastName={chatInfo.memberUser.lastName}
+					/>
+				</div>
+			);
+		});
+
+		return isLoading ? (
+			<Grid container direction="column" alignContent="center">
+				<CircularProgress color="secondary" />
+			</Grid>
+		) : (
+			userChats
+		);
+	};
+
 	return (
 		<>
 			<Hidden mdUp>
@@ -12,53 +59,34 @@ const ChatsPanel = () => {
 					style={{
 						display: 'flex',
 						flexDirection: 'row',
+						justifyContent: 'space-evenly',
 						padding: 0,
 					}}
 				>
-					<Chat
-						avatarUrl="https://material-ui.com/static/images/avatar/2.jpg"
-						id="342"
-						isSelected={false}
-						userName="Paolo"
-						userLastName="Reyes"
-					/>
-
-					<Chat
-						avatarUrl="https://material-ui.com/static/images/avatar/5.jpg"
-						id="23432"
-						userName="Ricardo"
-						userLastName="Loza"
-					/>
+					{renderChats(true)}
 				</List>
 			</Hidden>
 
 			<Hidden smDown>
 				<List>
 					<UserInfo
-						avatarUrl="https://material-ui.com/static/images/avatar/1.jpg"
+						avatarUrl={currentUser.imageUrl}
 						isOwner
-						userName="Paolo"
-						userLastName="Reyes"
+						userName={currentUser.name}
+						userLastName={currentUser.lastName}
 						withDivider
 					/>
 
-					<Chat
-						avatarUrl="https://material-ui.com/static/images/avatar/2.jpg"
-						userName="Loza"
-						userLastName="Lima"
-						lastMessage="This is a very long text in my opinion This is a very long text in my opinion"
-					/>
-
-					<Chat
-						avatarUrl="https://material-ui.com/static/images/avatar/5.jpg"
-						userName="Ricardo"
-						userLastName="Loza"
-						lastMessage="This is a very long text in my opinion This is a very long text in my opinion"
-					/>
+					{renderChats()}
 				</List>
 			</Hidden>
 		</>
 	);
 };
 
-export default ChatsPanel;
+const mapStateToProps = (state) => ({
+	chats: state.chats,
+	users: state.users,
+});
+
+export default connect(mapStateToProps, { cleanAllChats, fetchChats, setCurrentChat })(ChatsPanel);

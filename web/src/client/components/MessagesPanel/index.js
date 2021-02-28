@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 import { Divider, List, makeStyles } from '@material-ui/core';
 
 import Message from '../Message';
@@ -37,4 +40,8 @@ const MesssagesPanel = () => {
 	);
 };
 
-export default MesssagesPanel;
+const mapStateToProps = (state) => ({
+	users: state.users,
+});
+
+export default connect(mapStateToProps, {})(MesssagesPanel);

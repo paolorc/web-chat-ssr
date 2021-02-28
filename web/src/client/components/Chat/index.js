@@ -11,8 +11,9 @@ import {
 const Chat = ({
 	avatarUrl = 'https://material-ui.com/static/images/avatar/1.jpg',
 	id = Math.random(),
+	isCompact = false,
 	isSelected = false,
-	lastMessage,
+	lastMessage = '',
 	onClick = () => {
 		console.log('Holaaa');
 	},
@@ -35,7 +36,7 @@ const Chat = ({
 				<ListItemText
 					primary={`${userName} ${userLastName}`}
 					secondary={
-						lastMessage && (
+						!isCompact && (
 							<Typography variant="body2" color="primary" noWrap>
 								{lastMessage}
 							</Typography>
@@ -44,7 +45,7 @@ const Chat = ({
 				/>
 			</ListItem>
 
-			{withDivider && <Divider variant="inset" component="li" />}
+			{withDivider && !isCompact && <Divider variant="inset" component="li" />}
 		</>
 	);
 };

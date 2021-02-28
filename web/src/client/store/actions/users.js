@@ -6,6 +6,7 @@ export const FETCH_USERS = 'FETCH_USERS';
 export const FETCH_USERS_ERROR = 'FETCH_USERS_ERROR';
 export const FETCH_USERS_SUCCESSFUL = 'FETCH_USERS_SUCCESSFUL';
 export const SET_ACTIVE_USER = 'SET_ACTIVE_USER';
+export const SET_ACTIVE_USER_ERROR = 'SET_ACTIVE_USER_ERROR';
 export const SET_ACTIVE_USER_SUCCESSFUL = 'SET_ACTIVE_USER_SUCCESSFUL';
 export const SET_INACTIVE_USER = 'SET_INACTIVE_USER';
 
@@ -71,12 +72,12 @@ export function setActiveUser(user) {
 			dispatch({
 				type: SET_ACTIVE_USER_SUCCESSFUL,
 				payload: {
-					currentUser: user,
+					currentUser: { ...user, online: true },
 				},
 			});
 		} catch (error) {
 			dispatch({
-				type: FETCH_USERS_ERROR,
+				type: SET_ACTIVE_USER_ERROR,
 				payload: {
 					message: error.message || 'Error fetching users',
 				},
