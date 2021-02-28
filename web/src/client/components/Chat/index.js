@@ -1,35 +1,52 @@
 import React from 'react';
-import { Avatar, ListItem, ListItemAvatar, ListItemText, Typography } from '@material-ui/core';
+import {
+	Avatar,
+	Divider,
+	ListItem,
+	ListItemIcon,
+	ListItemText,
+	Typography,
+} from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-	inline: {
-		display: 'inline',
+const Chat = ({
+	avatarUrl = 'https://material-ui.com/static/images/avatar/1.jpg',
+	id = Math.random(),
+	isSelected = false,
+	lastMessage,
+	onClick = () => {
+		console.log('Holaaa');
 	},
-}));
-
-export default function SlidebarChat({ name, lastName, message = '' }) {
-	const classes = useStyles();
-
+	userName = 'Name',
+	userLastName = 'LastName',
+	withDivider = true,
+}) => {
 	return (
-		<ListItem button alignItems="flex-start">
-			<ListItemAvatar>
-				<Avatar>JW</Avatar>
-			</ListItemAvatar>
+		<>
+			<ListItem
+				button
+				key={id}
+				selected={isSelected}
+				onClick={(event) => onClick(event, 0)}
+				alignItems="flex-start"
+			>
+				<ListItemIcon>
+					<Avatar src={avatarUrl} />
+				</ListItemIcon>
+				<ListItemText
+					primary={`${userName} ${userLastName}`}
+					secondary={
+						lastMessage && (
+							<Typography variant="body2" color="primary" noWrap>
+								{lastMessage}
+							</Typography>
+						)
+					}
+				/>
+			</ListItem>
 
-			<ListItemText
-				primary="Jefferson Etc"
-				secondary={
-					<Typography
-						component="span"
-						variant="body2"
-						color="primary"
-						noWrap
-						className={classes.inline}
-					>
-						This is a very long text in my opinion
-					</Typography>
-				}
-			/>
-		</ListItem>
+			{withDivider && <Divider variant="inset" component="li" />}
+		</>
 	);
-}
+};
+
+export default Chat;
