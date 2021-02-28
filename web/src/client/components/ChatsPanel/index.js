@@ -36,6 +36,7 @@ const ChatsPanel = () => {
 				<List>
 					<UserInfo
 						avatarUrl="https://material-ui.com/static/images/avatar/1.jpg"
+						isOwner
 						userName="Paolo"
 						userLastName="Reyes"
 						withDivider

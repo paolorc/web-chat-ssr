@@ -1,7 +1,13 @@
-import { FETCH_USERS, FETCH_USERS_ERROR, FETCH_USERS_SUCCESSFUL } from '../actions/users';
+import {
+	FETCH_USERS,
+	FETCH_USERS_ERROR,
+	FETCH_USERS_SUCCESSFUL,
+	SET_ACTIVE_USER,
+} from '../actions/users';
 
 const initialState = {
 	allUsers: [],
+	currentUser: {},
 	loading: false,
 	error: false,
 };
@@ -26,6 +32,14 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				allUsers: action.payload.allUsers,
+				loading: false,
+				error: false,
+			};
+
+		case SET_ACTIVE_USER:
+			return {
+				...state,
+				currentUser: action.payload.currentUser,
 				loading: false,
 				error: false,
 			};
