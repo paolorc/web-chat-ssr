@@ -79,7 +79,7 @@ export function setActiveUser(user) {
 			dispatch({
 				type: SET_ACTIVE_USER_ERROR,
 				payload: {
-					message: error.message || 'Error fetching users',
+					message: error.message || 'Error activating a user',
 				},
 			});
 		}

@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 
 import { CircularProgress, Divider, Grid, List, makeStyles, Typography } from '@material-ui/core';
 import MessageIcon from '@material-ui/icons/Message';
 
-import { cleanAllMessages, fetchMessages } from '../../store/actions/messages';
+import { cleanAllMessages, fetchMessages, setPendingMessage } from '../../store/actions/messages';
 import Message from '../Message';
 import MessageInput from '../MessageInput';
 
@@ -31,13 +31,16 @@ const MesssagesPanel = ({
 	currentUser,
 	fetchMessages,
 	messages,
+	setPendingMessage,
 }) => {
-	const classes = useStyles();
 	const { allMessages, loading: isLoading } = messages;
+	const { _id: chatId } = currentChat;
+	const classes = useStyles();
+	const messagesEndRef = useRef(null);
 
 	useEffect(() => {
 		// If a chat was selected
-		if (currentChat._id) {
+		if (chatId) {
 			console.log(currentChat);
 			fetchMessages();
 		}
@@ -46,7 +49,15 @@ const MesssagesPanel = ({
 		return cleanAllMessages;
 	}, [currentChat, cleanAllMessages, fetchMessages]);
 
-	if (!currentChat._id) {
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+	};
+
+	useEffect(() => {
+		scrollToBottom();
+	}, [allMessages]);
+
+	if (!chatId) {
 		return (
 			<>
 				<Typography
@@ -67,18 +78,25 @@ const MesssagesPanel = ({
 			const messageAlign = isOwnUserMessage ? 'right' : 'left';
 			const messageSender = isOwnUserMessage ? currentUser.name : msg.sender.name;
 			return (
-				<div key={msg._id}>
+				<div key={msg.uuid}>
 					<Message text={msg.text} align={messageAlign} sender={messageSender} />
 				</div>
 			);
 		});
 
-		return usersMessages;
+		return (
+			<div>
+				{usersMessages}
+				<div ref={messagesEndRef} />
+			</div>
+		);
 	};
 
 	const handleSendMessage = (message) => {
+		const { _id, name } = currentUser;
 		if (message.length > 0) {
 			console.log(`sending message: ${message}`);
+			setPendingMessage({ chatId, msgText: message, sender: { _id, name } });
 		}
 	};
 
@@ -106,4 +124,6 @@ const mapStateToProps = (state) => ({
 	messages: state.messages,
 });
 
-export default connect(mapStateToProps, { cleanAllMessages, fetchMessages })(MesssagesPanel);
+export default connect(mapStateToProps, { cleanAllMessages, fetchMessages, setPendingMessage })(
+	MesssagesPanel,
+);
