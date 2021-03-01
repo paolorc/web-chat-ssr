@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { CircularProgress, Divider, Grid, List, makeStyles, Typography } from '@material-ui/core';
@@ -34,7 +34,6 @@ const MesssagesPanel = ({
 }) => {
 	const classes = useStyles();
 	const { allMessages, loading: isLoading } = messages;
-	const [message, setMessage] = useState('');
 
 	useEffect(() => {
 		// If a chat was selected
@@ -77,13 +76,10 @@ const MesssagesPanel = ({
 		return usersMessages;
 	};
 
-	const handleChange = ({ target }) => {
-		setMessage(target.value);
-	};
-
-	const handleSendMessage = () => {
-		console.log(`sending message: ${message}`);
-		setMessage('');
+	const handleSendMessage = (message) => {
+		if (message.length > 0) {
+			console.log(`sending message: ${message}`);
+		}
 	};
 
 	const renderPanel = () =>
@@ -97,11 +93,7 @@ const MesssagesPanel = ({
 
 				<Divider />
 
-				<MessageInput
-					message={message}
-					onChange={handleChange}
-					onSendClick={handleSendMessage}
-				/>
+				<MessageInput onSend={handleSendMessage} />
 			</>
 		);
 

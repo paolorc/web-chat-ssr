@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Fab, Grid, TextField } from '@material-ui/core';
 import { Send as SendIcon } from '@material-ui/icons';
 
-const MesssageInput = ({ onSendClick = () => {}, onChange = () => {}, message = '' }) => {
+import { applyTextFilter } from '../../../shared/utils';
+
+const MesssageInput = ({ maxLength = 1000, onSend = () => {} }) => {
+	const [message, setMessage] = useState('');
+
 	const handleKeyPress = ({ which }) => {
 		if (which === 13) {
-			onSendClick();
+			handleSend();
 		}
+	};
+
+	const handleChange = ({ target }) => {
+		setMessage(target.value);
+	};
+
+	const handleSend = () => {
+		onSend(applyTextFilter(message));
+		setMessage('');
 	};
 
 	return (
@@ -14,15 +27,16 @@ const MesssageInput = ({ onSendClick = () => {}, onChange = () => {}, message = 
 			<Grid item xs={11}>
 				<TextField
 					id="outlined-basic-email"
+					inputProps={{ maxLength }}
 					label="Type Something"
 					fullWidth
 					value={message}
-					onChange={(e) => onChange(e)}
+					onChange={(e) => handleChange(e)}
 					onKeyPress={(e) => handleKeyPress(e)}
 				/>
 			</Grid>
 			<Grid item xs={1} align="right">
-				<Fab color="secondary" aria-label="add" onClick={(e) => onSendClick(e)}>
+				<Fab color="secondary" aria-label="add" onClick={() => handleSend()}>
 					<SendIcon />
 				</Fab>
 			</Grid>
