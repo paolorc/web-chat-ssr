@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from '../../adapters/xhr';
 
 export const CLEAN_ALL_CHATS = 'CLEAN_ALL_CHATS';
 export const FETCH_CHATS = 'FETCH_CHATS';
@@ -13,61 +13,19 @@ export function cleanAllChats() {
 	};
 }
 
-export function fetchChats() {
+export function fetchChats(userId) {
 	return async (dispatch) => {
 		try {
 			dispatch({
 				type: FETCH_CHATS,
 			});
 
-			// const res = axios.get('url');
-			const sleep = (ms) => {
-				return new Promise((resolve) => setTimeout(resolve, ms));
-			};
-
-			await sleep(1000);
+			const response = await request.get(`/users/${userId}/chats`);
 
 			dispatch({
 				type: FETCH_CHATS_SUCCESSFUL,
 				payload: {
-					allChats: [
-						{
-							_id: 'chat1',
-							lastMessage: 'This is the last message ver long to read and over time',
-							members: [
-								{
-									_id: 'user1',
-									name: 'Jefferson',
-									lastName: 'Licet',
-									imageUrl: 'https://material-ui.com/static/images/avatar/5.jpg',
-								},
-								{
-									_id: '23423423532',
-									name: 'Tiago',
-									lastName: 'Del Rio',
-									imageUrl: 'https://material-ui.com/static/images/avatar/2.jpg',
-								},
-							],
-						},
-						{
-							_id: 'chat2',
-							lastMessage: 'Hola carnalito como te ha ido man!???',
-							members: [
-								{
-									_id: 'user1',
-									name: 'Paolo',
-									lastName: 'Reyes',
-									imageUrl: 'https://material-ui.com/static/images/avatar/1.jpg',
-								},
-								{
-									_id: '23423423532',
-									name: 'Tiago',
-									lastName: 'Del Rio',
-									imageUrl: 'https://material-ui.com/static/images/avatar/2.jpg',
-								},
-							],
-						},
-					],
+					allChats: response.data,
 				},
 			});
 		} catch (error) {
@@ -86,7 +44,8 @@ export function setCurrentChat(chat) {
 		dispatch({
 			type: SET_CURRENT_CHAT,
 		});
-		// const res = axios.get('url');
+
+		// Here goes some request or something...
 
 		dispatch({
 			type: SET_CURRENT_CHAT_SUCCESSFUL,

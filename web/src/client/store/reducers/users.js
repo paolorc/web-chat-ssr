@@ -48,6 +48,7 @@ export default (state = initialState, action) => {
 		case SET_ACTIVE_USER:
 			return {
 				...state,
+				currentUser: action.payload.currentUser,
 				loading: true,
 				error: false,
 			};
@@ -62,7 +63,7 @@ export default (state = initialState, action) => {
 		case SET_ACTIVE_USER_SUCCESSFUL:
 			return {
 				...state,
-				currentUser: action.payload.currentUser,
+				currentUser: { ...state.currentUser, connection: action.payload.connection },
 				loading: false,
 			};
 

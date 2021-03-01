@@ -1,4 +1,4 @@
-import axios from 'axios';
+import request from '../../adapters/xhr';
 import { v4 as uuid } from 'uuid';
 
 export const CLEAN_ALL_MESSAGES = 'CLEAN_ALL_MESSAGES';
@@ -15,18 +15,15 @@ export function cleanAllMessages() {
 	};
 }
 
-export function fetchMessages() {
+export function fetchMessages(chatId) {
 	return async (dispatch) => {
 		try {
 			async function subscribe() {
 				dispatch({
 					type: FETCH_MESSAGES,
 				});
-				const sleep = (ms) => {
-					return new Promise((resolve) => setTimeout(resolve, ms));
-				};
 
-				await sleep(1000);
+				const response = await request.get(`/chats/${chatId}/messages`);
 
 				if (false) {
 					// Connection timeout
@@ -44,34 +41,15 @@ export function fetchMessages() {
 					dispatch({
 						type: FETCH_MESSAGES_SUCCESSFUL,
 						payload: {
-							allMessages: [
-								{
-									uuid: '603c2d5f0891c30e8254a411',
-									chatId: 'chat1',
-									createdAt: new Date(),
-									sender: {
-										_id: '23423423532',
-										name: 'Tiago',
-									},
-									text: 'ESTOS MESAJES SON PENDEJOS!!!',
-								},
-								{
-									uuid: '603c2d5f0891c30e8254a410',
-									chatId: 'chat1',
-									createdAt: new Date(),
-									sender: {
-										_id: 'user1',
-										name: 'Jefferson',
-									},
-									text: 'asi es wey...',
-								},
-							],
+							allMessages: response.data,
 						},
 					});
 					await new Promise((resolve) => setTimeout(resolve, 2 * 1000));
 					await subscribe();
 				}
 			}
+
+			// Call pooling
 			subscribe();
 		} catch (error) {
 			dispatch({
@@ -87,29 +65,28 @@ export function fetchMessages() {
 export function sendMessage({ chatId, msgText, sender }) {
 	return async (dispatch) => {
 		try {
+			const message = {
+				uuid: uuid(),
+				chatId: chatId,
+				createdAt: new Date(),
+				sender: {
+					_id: sender._id,
+					name: sender.name,
+				},
+				text: msgText,
+			};
+
 			dispatch({
 				type: SEND_MESSAGE,
 				payload: {
-					message: {
-						uuid: uuid(),
-						chatId: chatId,
-						createdAt: new Date(),
-						sender: {
-							_id: sender._id,
-							name: sender.name,
-						},
-						text: msgText,
-					},
+					message,
 				},
 			});
 
 			console.log('Esta enviado mensaje en action: ', msgText);
-			// const res = axios.get('url');
-			const sleep = (ms) => {
-				return new Promise((resolve) => setTimeout(resolve, ms));
-			};
-
-			await sleep(2000);
+			await request.post('/messages', {
+				message,
+			});
 
 			console.log('Acabo mensaje: ', msgText);
 			dispatch({

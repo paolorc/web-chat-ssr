@@ -49,7 +49,7 @@ const MesssagesPanel = ({
 		// If a chat was selected
 		if (chatId) {
 			console.log(currentChat);
-			fetchMessages();
+			fetchMessages(chatId);
 		}
 
 		// clean all the message store when removed

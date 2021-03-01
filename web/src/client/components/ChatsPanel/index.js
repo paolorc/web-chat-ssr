@@ -11,7 +11,7 @@ const ChatsPanel = ({ chats, cleanAllChats, fetchChats, setCurrentChat, users })
 	const { currentUser } = users;
 
 	useEffect(() => {
-		fetchChats();
+		fetchChats(currentUser._id);
 
 		return cleanAllChats;
 	}, [cleanAllChats, fetchChats]);

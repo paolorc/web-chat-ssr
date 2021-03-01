@@ -45,7 +45,7 @@ const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, se
 
 				<List>
 					{allUsers.length > 0 ? (
-						availableUsers.map((user) => (
+						allUsers.map((user) => (
 							<Link
 								className={classes.btn}
 								key={user._id}

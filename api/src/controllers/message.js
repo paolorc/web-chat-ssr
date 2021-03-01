@@ -10,7 +10,7 @@ const createMessage = async (req, res) => {
 
 const fetchChatMessages = async (req, res) => {
 	const { chatId } = req.params;
-	const messages = await Message.find({ chatId: Types.ObjectId(chatId) }).sort({ createdAt: -1 });
+	const messages = await Message.find({ chatId: Types.ObjectId(chatId) }).sort({ createdAt: 1 });
 
 	return res.status(200).json(messages);
 };

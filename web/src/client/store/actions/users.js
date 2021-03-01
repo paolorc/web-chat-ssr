@@ -1,4 +1,6 @@
-import axios from 'axios';
+import { v4 as uuid } from 'uuid';
+
+import request from '../../adapters/xhr';
 
 export const CLEAN_ALL_USERS = 'CLEAN_ALL_USERS';
 export const CLEAN_CURRENT_USER = 'CLEAN_CURRENT_USER';
@@ -29,25 +31,12 @@ export function fetchUsers() {
 				type: FETCH_USERS,
 			});
 
-			const sleep = (ms) => {
-				return new Promise((resolve) => setTimeout(resolve, ms));
-			};
-
-			// await sleep(2000);
-			// const res = axios.get('url');
+			const response = await request.get('/users');
 
 			dispatch({
 				type: FETCH_USERS_SUCCESSFUL,
 				payload: {
-					allUsers: [
-						{
-							_id: '23423423532',
-							name: 'Tiago',
-							lastName: 'Del Rio',
-							imageUrl: 'https://material-ui.com/static/images/avatar/2.jpg',
-							online: false,
-						},
-					],
+					allUsers: response.data,
 				},
 			});
 		} catch (error) {
@@ -66,13 +55,18 @@ export function setActiveUser(user) {
 		try {
 			dispatch({
 				type: SET_ACTIVE_USER,
+				payload: {
+					currentUser: user,
+				},
 			});
-			// const res = axios.get('url');
+			const response = await request.post(`/users/${user._id}/connect`, {
+				connection: uuid(),
+			});
 
 			dispatch({
 				type: SET_ACTIVE_USER_SUCCESSFUL,
 				payload: {
-					currentUser: { ...user, online: true },
+					connection: response.data.connection,
 				},
 			});
 		} catch (error) {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -30,8 +30,6 @@ const useStyles = makeStyles((theme) => ({
 const ChatApp = ({ cleanAllUsers, users }) => {
 	const classes = useStyles();
 	const { currentUser } = users;
-
-	useEffect(() => {}, []);
 
 	if (!currentUser._id) {
 		// Redirect if no user was selected from welcome page
