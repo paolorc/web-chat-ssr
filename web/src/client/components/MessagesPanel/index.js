@@ -1,12 +1,16 @@
 import React, { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
+import { debounce } from 'lodash';
 
 import { CircularProgress, Divider, Grid, List, makeStyles, Typography } from '@material-ui/core';
 import MessageIcon from '@material-ui/icons/Message';
 
-import { cleanAllMessages, fetchMessages, setPendingMessage } from '../../store/actions/messages';
+import { cleanAllMessages, fetchMessages, sendMessage } from '../../store/actions/messages';
 import Message from '../Message';
 import MessageInput from '../MessageInput';
+
+const DEBOUNCE_MESSAGE_TIME = 0.5 * 1000; // milliseconds
+const DEBOUNCE_MESSAGE_MAX_TIME = 1 * 1000; // milliseconds
 
 const useStyles = makeStyles({
 	messagePanel: {
@@ -31,12 +35,15 @@ const MesssagesPanel = ({
 	currentUser,
 	fetchMessages,
 	messages,
-	setPendingMessage,
+	sendMessage,
 }) => {
 	const { allMessages, loading: isLoading } = messages;
 	const { _id: chatId } = currentChat;
 	const classes = useStyles();
 	const messagesEndRef = useRef(null);
+	const debouncedMessages = debounce(sendMessage, DEBOUNCE_MESSAGE_TIME, {
+		maxWait: DEBOUNCE_MESSAGE_MAX_TIME,
+	});
 
 	useEffect(() => {
 		// If a chat was selected
@@ -95,8 +102,7 @@ const MesssagesPanel = ({
 	const handleSendMessage = (message) => {
 		const { _id, name } = currentUser;
 		if (message.length > 0) {
-			console.log(`sending message: ${message}`);
-			setPendingMessage({ chatId, msgText: message, sender: { _id, name } });
+			debouncedMessages({ chatId, msgText: message, sender: { _id, name } });
 		}
 	};
 
@@ -124,6 +130,8 @@ const mapStateToProps = (state) => ({
 	messages: state.messages,
 });
 
-export default connect(mapStateToProps, { cleanAllMessages, fetchMessages, setPendingMessage })(
-	MesssagesPanel,
-);
+export default connect(mapStateToProps, {
+	cleanAllMessages,
+	fetchMessages,
+	sendMessage,
+})(MesssagesPanel);

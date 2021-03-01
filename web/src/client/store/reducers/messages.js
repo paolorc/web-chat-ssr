@@ -11,10 +11,10 @@ import {
 
 const initialState = {
 	allMessages: [],
-	pendingMessages: [],
-	sendingMessage: false,
-	sendingMessageIdx: null,
+	fetchError: false,
 	loading: false,
+	pulling: false,
+	sendingMessage: false,
 	error: false,
 };
 
@@ -29,27 +29,28 @@ export default (state = initialState, action) => {
 		case FETCH_MESSAGES:
 			return {
 				...state,
-				loading: true,
-				error: false,
+				pulling: true,
+				fetchError: false,
 			};
 
 		case FETCH_MESSAGES_ERROR:
 			return {
 				...state,
-				loading: false,
-				error: action.payload.message,
+				pulling: false,
+				fetchError: action.payload.message,
 			};
 
 		case FETCH_MESSAGES_SUCCESSFUL:
 			return {
 				...state,
 				allMessages: action.payload.allMessages,
-				loading: false,
+				pulling: false,
 			};
 
 		case SEND_MESSAGE:
 			return {
 				...state,
+				allMessages: [...state.allMessages, action.payload.message],
 				sendingMessage: true,
 			};
 
@@ -63,20 +64,8 @@ export default (state = initialState, action) => {
 		case SEND_MESSAGE_SUCCESSFUL:
 			return {
 				...state,
-				pendingMessages: state.pendingMessages.slice(
-					sendingMessageIdx + 1,
-					state.pendingMessages - 1,
-				),
 				sendingMessage: false,
 				error: false,
-			};
-
-		case SET_PENDING_MESSAGE:
-			return {
-				...state,
-				allMessages: [...state.allMessages, action.payload.message],
-				pendingMessages: [...state.pendingMessages, action.payload.message],
-				sendingMessageIdx: state.pendingMessages.length,
 			};
 
 		default:
