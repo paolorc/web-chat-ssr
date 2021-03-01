@@ -13,11 +13,11 @@ import theme from '../../client/theme';
 const loadRoutesData = (pathLocation, store) => {
 	const routes = matchRoutes(Routes, pathLocation);
 
-	// Execute all loadData functions inside given urls and wrap promises with new promises to be able to render pages all the time
-	// Even if we get an error while loading data, we will still attempt to render page.
+	// Execute all loadData functions, even if we have an error on this
+	// we still render the page
 	const promises = routes.map(({ route, match }) => {
 		const { params } = match;
-		// console.log(JSON.stringify(params));
+
 		return route.loadData ? route.loadData(store, params) : Promise.resolve(null);
 	});
 
