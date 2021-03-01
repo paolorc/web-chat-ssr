@@ -6,8 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
-import { cleanAllUsers } from '../store/actions/users';
-
 import ChatsPanel from '../components/ChatsPanel';
 import MesssagesPanel from '../components/MessagesPanel';
 
@@ -27,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const ChatApp = ({ cleanAllUsers, users }) => {
+const ChatApp = ({ users }) => {
 	const classes = useStyles();
 	const { currentUser } = users;
 
@@ -55,5 +53,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default {
-	component: connect(mapStateToProps, { cleanAllUsers })(ChatApp),
+	component: connect(mapStateToProps, {})(ChatApp),
 };

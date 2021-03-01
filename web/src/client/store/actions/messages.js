@@ -1,6 +1,8 @@
 import request from '../../adapters/xhr';
 import { v4 as uuid } from 'uuid';
 
+import { SET_INACTIVE_USER } from './users';
+
 export const CLEAN_ALL_MESSAGES = 'CLEAN_ALL_MESSAGES';
 export const FETCH_MESSAGES = 'FETCH_MESSAGES';
 export const FETCH_MESSAGES_ERROR = 'FETCH_MESSAGES_ERROR';
@@ -15,20 +17,31 @@ export function cleanAllMessages() {
 	};
 }
 
-export function fetchMessages(chatId) {
+const PULLING_INTERVAL = 2 * 1000; // milliseconds
+export function fetchMessages(chatId, currentUser) {
 	return async (dispatch) => {
+		// Todo: Review why this is not removing when page is destroyed
 		try {
 			async function subscribe() {
+				console.log(currentUser);
+				dispatch(validateSession(currentUser));
 				dispatch({
 					type: FETCH_MESSAGES,
 				});
 
-				const response = await request.get(`/chats/${chatId}/messages`);
+				try {
+					const response = await request.get(`/chats/${chatId}/messages`);
 
-				if (false) {
-					// Connection timeout
-					// happens when the connection was pending for too long
-					// let's reconnect
+					dispatch({
+						type: FETCH_MESSAGES_SUCCESSFUL,
+						payload: {
+							allMessages: response.data,
+						},
+					});
+					await new Promise((resolve) => setTimeout(resolve, PULLING_INTERVAL));
+
+					await subscribe();
+				} catch (error) {
 					dispatch({
 						type: FETCH_MESSAGES_ERROR,
 						payload: {
@@ -36,21 +49,11 @@ export function fetchMessages(chatId) {
 						},
 					});
 					await subscribe();
-				} else {
-					// set a timeout and re call
-					dispatch({
-						type: FETCH_MESSAGES_SUCCESSFUL,
-						payload: {
-							allMessages: response.data,
-						},
-					});
-					await new Promise((resolve) => setTimeout(resolve, 2 * 1000));
-					await subscribe();
 				}
 			}
 
 			// Call pooling
-			subscribe();
+			return subscribe();
 		} catch (error) {
 			dispatch({
 				type: FETCH_MESSAGES_ERROR,
@@ -83,12 +86,10 @@ export function sendMessage({ chatId, msgText, sender }) {
 				},
 			});
 
-			console.log('Esta enviado mensaje en action: ', msgText);
 			await request.post('/messages', {
 				message,
 			});
 
-			console.log('Acabo mensaje: ', msgText);
 			dispatch({
 				type: SEND_MESSAGE_SUCCESSFUL,
 			});
@@ -99,6 +100,16 @@ export function sendMessage({ chatId, msgText, sender }) {
 					message: error.message || 'Error sending a message',
 				},
 			});
+		}
+	};
+}
+
+export function validateSession(currentUser) {
+	return async (dispatch) => {
+		const { data } = await request.get(`/users/${currentUser._id}`);
+
+		if (data.connection !== currentUser.connection) {
+			dispatch({ type: SET_INACTIVE_USER });
 		}
 	};
 }

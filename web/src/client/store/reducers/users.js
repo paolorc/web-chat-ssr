@@ -6,6 +6,7 @@ import {
 	SET_ACTIVE_USER,
 	SET_ACTIVE_USER_ERROR,
 	SET_ACTIVE_USER_SUCCESSFUL,
+	SET_INACTIVE_USER,
 } from '../actions/users';
 
 const initialState = {
@@ -65,6 +66,12 @@ export default (state = initialState, action) => {
 				...state,
 				currentUser: { ...state.currentUser, connection: action.payload.connection },
 				loading: false,
+			};
+
+		case SET_INACTIVE_USER:
+			return {
+				...state,
+				currentUser: {},
 			};
 
 		default:

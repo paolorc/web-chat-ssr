@@ -48,13 +48,12 @@ const MesssagesPanel = ({
 	useEffect(() => {
 		// If a chat was selected
 		if (chatId) {
-			console.log(currentChat);
-			fetchMessages(chatId);
+			fetchMessages(chatId, currentUser);
 		}
 
 		// clean all the message store when removed
 		return cleanAllMessages;
-	}, [currentChat, cleanAllMessages, fetchMessages]);
+	}, [currentChat, cleanAllMessages, fetchMessages, chatId]);
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

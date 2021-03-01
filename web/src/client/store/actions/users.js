@@ -80,4 +80,8 @@ export function setActiveUser(user) {
 	};
 }
 
-export function setInactiveUser() {}
+export function setInactiveUser() {
+	return {
+		type: SET_INACTIVE_USER,
+	};
+}
