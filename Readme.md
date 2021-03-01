@@ -28,3 +28,11 @@ Para correr el proyecto seguir los siguientes pasos:
 
 
 Thank you! Enjoy and happy coding!
+
+##### Screenshots:
+![Screen Shot 2021-03-01 at 07 58 23](https://user-images.githubusercontent.com/19379373/109500189-e6f37d00-7a63-11eb-9b81-92161eeb6290.png)
+
+![Screen Shot 2021-03-01 at 08 00 27](https://user-images.githubusercontent.com/19379373/109500374-3174f980-7a64-11eb-9576-03aef601a2e0.png)
+
+![Screen Shot 2021-03-01 at 08 00 41](https://user-images.githubusercontent.com/19379373/109500403-39cd3480-7a64-11eb-9329-006c7e481e55.png)
+
