@@ -21,6 +21,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				allChats: [],
+				currentChat: {},
 			};
 
 		case FETCH_CHATS:
