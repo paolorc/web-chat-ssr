@@ -18,9 +18,6 @@ app.use(helmet());
 app.use(cors());
 
 mongooseLoader();
-require('./models/Chat');
-require('./models/Message');
-// require('./models/User');
 
 // Load routes
 app.use(API_PREFIX, routes);
