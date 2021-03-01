@@ -37,8 +37,6 @@ const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, se
 	};
 
 	const renderUsersList = () => {
-		const availableUsers = allUsers.filter((user) => !user.online);
-
 		return (
 			<>
 				<Typography variant="subtitle1" color="primary" align="center">
@@ -46,7 +44,7 @@ const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, se
 				</Typography>
 
 				<List>
-					{availableUsers.length > 0 ? (
+					{allUsers.length > 0 ? (
 						availableUsers.map((user) => (
 							<Link
 								className={classes.btn}

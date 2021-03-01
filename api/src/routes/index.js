@@ -1,15 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const calculateRoutes = require('./calculate');
+const chats = require('./chats');
+const messages = require('./messages');
+const users = require('./users');
 
-router.use('/calculate', calculateRoutes);
-
-// Redirect when not found
-router.use('*', (_, res) => {
-    return res.status('404').json({
-        message: 'No matched Route',
-    });
-});
+router.use('/chats', chats);
+router.use('/messages', messages);
+router.use('/users', users);
 
 module.exports = router;
