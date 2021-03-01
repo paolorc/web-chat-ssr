@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { Divider, List, makeStyles, Typography } from '@material-ui/core';
+import { CircularProgress, Divider, Grid, List, makeStyles, Typography } from '@material-ui/core';
 import MessageIcon from '@material-ui/icons/Message';
 
 import { cleanAllMessages, fetchMessages } from '../../store/actions/messages';
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 		display: 'flex',
 		justifyContent: 'center',
 		alignItems: 'center',
-		height: '80vh',
+		height: '90vh',
 		padding: '20px',
 	},
 	messageIcon: {
@@ -33,13 +33,15 @@ const MesssagesPanel = ({
 	messages,
 }) => {
 	const classes = useStyles();
-	const { allMessages, loading } = messages;
+	const { allMessages, loading: isLoading } = messages;
 
 	useEffect(() => {
+		// If a chat was selected
 		if (currentChat._id) {
 			console.log(currentChat);
 			fetchMessages();
 		}
+
 		// clean all the message store when removed
 		return cleanAllMessages;
 	}, [currentChat, cleanAllMessages, fetchMessages]);
@@ -59,27 +61,37 @@ const MesssagesPanel = ({
 		);
 	}
 
-	return (
-		<>
-			<List className={classes.messagePanel}>
-				<Message
-					text="Te amo mucho mi amor... gracias por estos dias... de entenderme y aguantarme y ayudarme uu"
-					align="left"
-					sender="Paolo Reyes Gordito"
-				/>
+	const renderMessages = () => {
+		const usersMessages = allMessages.map((msg) => {
+			const isOwnUserMessage = msg.sender._id === currentUser._id;
+			const messageAlign = isOwnUserMessage ? 'right' : 'left';
+			const messageSender = isOwnUserMessage ? currentUser.name : msg.sender.name;
+			return (
+				<div key={msg._id}>
+					<Message text={msg.text} align={messageAlign} sender={messageSender} />
+				</div>
+			);
+		});
 
-				<Message
-					text="Gracias por todos los desayunos ricooos =)"
-					align="right"
-					sender="Gabriela Villafuerte, Mi vida"
-				/>
-			</List>
+		return usersMessages;
+	};
 
-			<Divider />
+	const renderPanel = () =>
+		isLoading ? (
+			<Grid container direction="column" alignContent="center" className={classes.emptyPanel}>
+				<CircularProgress color="secondary" />
+			</Grid>
+		) : (
+			<>
+				<List className={classes.messagePanel}>{renderMessages()}</List>
 
-			<MessageInput />
-		</>
-	);
+				<Divider />
+
+				<MessageInput />
+			</>
+		);
+
+	return renderPanel();
 };
 
 const mapStateToProps = (state) => ({

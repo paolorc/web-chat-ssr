@@ -23,7 +23,7 @@ export function fetchMessages() {
 				return new Promise((resolve) => setTimeout(resolve, ms));
 			};
 
-			await sleep(2000);
+			await sleep(1000);
 
 			dispatch({
 				type: FETCH_MESSAGES_SUCCESSFUL,
@@ -33,15 +33,26 @@ export function fetchMessages() {
 							_id: '603c2d5f0891c30e8254a411',
 							chatId: 'chat1',
 							createdAt: new Date(),
-							sender: '23423423532',
+							sender: {
+								_id: '23423423532',
+								name: 'Tiago',
+								lastName: 'Del Rio',
+								imageUrl: 'https://material-ui.com/static/images/avatar/2.jpg',
+								online: false,
+							},
 							text: 'ESTOS MESAJES SON PENDEJOS!!!',
 						},
 						{
 							_id: '603c2d5f0891c30e8254a410',
 							chatId: 'chat1',
 							createdAt: new Date(),
-							sender: 'user1',
-							text: 'SI QUE LO SON WEY!',
+							sender: {
+								_id: 'user1',
+								name: 'Jefferson',
+								lastName: 'Licet',
+								imageUrl: 'https://material-ui.com/static/images/avatar/5.jpg',
+							},
+							text: 'asi es wey...',
 						},
 					],
 				},

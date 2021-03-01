@@ -14,7 +14,7 @@ const ChatsPanel = ({ chats, cleanAllChats, fetchChats, setCurrentChat, users })
 		fetchChats();
 
 		return cleanAllChats;
-	}, [fetchChats]);
+	}, [cleanAllChats, fetchChats]);
 
 	const handleSelectChat = (chat) => {
 		setCurrentChat(chat);

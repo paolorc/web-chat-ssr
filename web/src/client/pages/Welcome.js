@@ -30,7 +30,7 @@ const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, se
 		}
 
 		return cleanAllUsers;
-	}, [loadUsers]);
+	}, [cleanAllUsers, loadUsers]);
 
 	const handleSelectUser = (user) => {
 		setActiveUser(user);

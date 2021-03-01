@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Message = ({ key = Math.random(), text = '', align = 'left', sender = 'Username' }) => {
+const Message = ({ id = Math.random(), text = '', align = 'left', sender = 'Username' }) => {
 	const classes = useStyles();
 	const alignSettings = {
 		left: { container: classes.messageContainerLeft, message: classes.messageLeft },
@@ -30,7 +30,7 @@ const Message = ({ key = Math.random(), text = '', align = 'left', sender = 'Use
 	};
 
 	return (
-		<ListItem key={key} className={alignSettings[align].container}>
+		<ListItem key={id} className={alignSettings[align].container}>
 			<Grid container className={alignSettings[align].message}>
 				<Grid item xs={12}>
 					<ListItemText align={align} secondary={sender} />
