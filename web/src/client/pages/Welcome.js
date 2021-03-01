@@ -26,7 +26,6 @@ const Welcome = ({ isLoading, allUsers, fetchUsers: loadUsers, cleanAllUsers, se
 	useEffect(() => {
 		//For re rendering without going to the server
 		if (allUsers.length === 0) {
-			console.log(JSON.stringify(allUsers));
 			loadUsers();
 		}
 

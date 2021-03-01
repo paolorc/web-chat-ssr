@@ -25,7 +25,7 @@ export function fetchChats() {
 				return new Promise((resolve) => setTimeout(resolve, ms));
 			};
 
-			await sleep(2000);
+			await sleep(1000);
 
 			dispatch({
 				type: FETCH_CHATS_SUCCESSFUL,
